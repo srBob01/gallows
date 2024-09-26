@@ -5,11 +5,11 @@ import backend.academy.entity.Difficulty;
 import java.util.List;
 
 public interface GameIORenderInterface {
-    Category selectCategory() throws Exception;
+    Category selectCategory();
 
-    Difficulty selectDifficulty() throws Exception;
+    Difficulty selectDifficulty();
 
-    String selectNextCharacter() throws Exception;
+    String selectNextCharacter();
 
     void print(String string);
 
