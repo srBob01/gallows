@@ -25,13 +25,19 @@ class DefaultWordRepositoryTest {
         randomGeneratorInterface = mock(RandomGeneratorInterface.class);
 
         List<Word> testWords = List.of(
-            new Word(Difficulty.EASY, Category.SCIENCE, "gravity", "A force that pulls objects towards Earth"),
-            new Word(Difficulty.MEDIUM, Category.TECHNOLOGY, "algorithm", "A set of rules to solve problems"),
-            new Word(Difficulty.HARD, Category.ART, "impressionism", "A 19th-century art movement"),
-            new Word(Difficulty.EASY, Category.MUSIC, "note", "A musical sound"),
-            new Word(Difficulty.MEDIUM, Category.SPORTS, "marathon", "A long-distance race"),
+            new Word(Difficulty.EASY, Category.SCIENCE, "gravity",
+                "A force that pulls objects towards Earth"),
+            new Word(Difficulty.MEDIUM, Category.TECHNOLOGY, "algorithm",
+                "A set of rules to solve problems"),
+            new Word(Difficulty.HARD, Category.ART, "impressionism",
+                "A 19th-century art movement"),
+            new Word(Difficulty.EASY, Category.MUSIC, "note",
+                "A musical sound"),
+            new Word(Difficulty.MEDIUM, Category.SPORTS, "marathon",
+                "A long-distance race"),
             // Добавляем слово с большим количеством уникальных символов для теста
-            new Word(Difficulty.HARD, Category.SCIENCE, "encyclopediaqwerty", "A comprehensive reference work"),
+            new Word(Difficulty.HARD, Category.SCIENCE, "encyclopediaqwerty",
+                "A comprehensive reference work"),
             new Word(Difficulty.EASY, Category.TECHNOLOGY, "aaa", "All letters are the same")
         );
 

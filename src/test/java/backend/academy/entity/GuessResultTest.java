@@ -13,7 +13,8 @@ class GuessResultTest {
 
     @BeforeEach
     void setUp() {
-        Word word = new Word(Difficulty.EASY, Category.SCIENCE, "gravity", "A force that pulls objects towards Earth");
+        Word word = new Word(Difficulty.EASY, Category.SCIENCE, "gravity",
+            "A force that pulls objects towards Earth");
         guessResult =
             new GuessResult(word, Difficulty.MEDIUM.stepsToSkip()); // Сложность уменьшает количество шагов на 3
     }
@@ -47,7 +48,7 @@ class GuessResultTest {
         ResultEnter result = guessResult.resultEnter("!");
         assertEquals(ResultEnter.Hint, result);
         assertNull(guessResult.character());
-        assertEquals(remains - 1, guessResult.remainingAttempts()); // Одна попытка потеряна за использование подсказки
+        assertEquals(remains - 1, guessResult.remainingAttempts());
     }
 
     @Test

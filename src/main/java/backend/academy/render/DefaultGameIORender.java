@@ -58,7 +58,8 @@ public class DefaultGameIORender implements GameIORenderInterface {
 
     @Override
     public Category selectCategory() {
-        return selectOption("category", Category.values(), randomGeneratorInterface);
+        return selectOption("category", Category.values(),
+            randomGeneratorInterface);
     }
 
     @Override
