@@ -1,16 +1,14 @@
 package backend.academy.render;
 
-
 import backend.academy.entity.Category;
 import backend.academy.entity.Difficulty;
 import backend.academy.input.InputInterface;
 import backend.academy.output.OutputInterface;
 import backend.academy.random.RandomGeneratorInterface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultGameIORender implements GameIORenderInterface {
     private static final Logger logger = LoggerFactory.getLogger(DefaultGameIORender.class);
@@ -18,18 +16,26 @@ public class DefaultGameIORender implements GameIORenderInterface {
     private final OutputInterface outputInterface;
     private final RandomGeneratorInterface randomGeneratorInterface;
 
-    public DefaultGameIORender(InputInterface inputInterface, OutputInterface outputInterface, RandomGeneratorInterface randomGeneratorInterface) {
+    public DefaultGameIORender(
+        InputInterface inputInterface,
+        OutputInterface outputInterface,
+        RandomGeneratorInterface randomGeneratorInterface
+    ) {
         this.inputInterface = inputInterface;
         this.outputInterface = outputInterface;
         this.randomGeneratorInterface = randomGeneratorInterface;
         logger.info("GameIORenderInterface initialized");
     }
 
-    private <T extends Enum<T>> T selectOption(String name, T[] values, RandomGeneratorInterface randomGeneratorInterface) {
+    private <T extends Enum<T>> T selectOption(
+        String name,
+        T[] values,
+        RandomGeneratorInterface randomGeneratorInterface
+    ) {
         outputInterface.print("Select " + name + ".");
 
         IntStream.range(0, values.length)
-                .forEach(i -> outputInterface.print(i + " - " + values[i]));
+            .forEach(i -> outputInterface.print(i + " - " + values[i]));
 
         outputInterface.print("other - random.");
 

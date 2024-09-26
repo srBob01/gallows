@@ -1,10 +1,8 @@
 package backend.academy.input;
 
+import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Scanner;
-
 
 public class ConsoleInputReader implements InputInterface {
     private static final Logger logger = LoggerFactory.getLogger(ConsoleInputReader.class);

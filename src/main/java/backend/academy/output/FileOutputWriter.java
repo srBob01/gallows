@@ -1,10 +1,9 @@
 package backend.academy.output;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileWriter;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileOutputWriter implements OutputInterface {
     private static final Logger logger = LoggerFactory.getLogger(FileOutputWriter.class);
