@@ -1,0 +1,31 @@
+Difficulty,Category,Word,Hint
+EASY,SCIENCE,gravity,A force that pulls objects towards Earth
+EASY,SCIENCE,molecule,A group of atoms bonded together
+MEDIUM,SCIENCE,experiment,A procedure to test a hypothesis
+MEDIUM,SCIENCE,atom,The smallest unit of matter
+HARD,SCIENCE,quantum,A branch of physics dealing with subatomic particles
+HARD,SCIENCE,photosynthesis,A process used by plants to convert light energy
+EASY,TECHNOLOGY,mouse,An input device for computers
+EASY,TECHNOLOGY,keyboard,A typing input device for computers
+MEDIUM,TECHNOLOGY,algorithm,A set of rules to solve problems
+MEDIUM,TECHNOLOGY,software,Programs and other operating information used by a computer
+HARD,TECHNOLOGY,encryption,The process of encoding a message or information
+HARD,TECHNOLOGY,virtualization,The creation of virtual versions of something
+EASY,MUSIC,note,A musical sound
+EASY,MUSIC,chord,A combination of three or more musical notes
+MEDIUM,MUSIC,scale,A set of musical notes ordered by pitch
+MEDIUM,MUSIC,rhythm,A strong regular repeated pattern of movement or sound
+HARD,MUSIC,symphony,A large-scale musical composition
+HARD,MUSIC,concerto,A musical composition for a solo instrument or instruments
+EASY,SPORTS,ball,A round object used in many sports
+EASY,SPORTS,running,The action or movement of a runner
+MEDIUM,SPORTS,marathon,A long-distance race
+MEDIUM,SPORTS,swimming,A sport or activity of moving through water
+HARD,SPORTS,triathlon,An endurance event involving swimming cycling and running
+HARD,SPORTS,decathlon,A combined event in athletics consisting of ten track and field events
+EASY,ART,brush,A tool used for painting
+EASY,ART,canvas,A piece of cloth on which an artist paints
+MEDIUM,ART,sculpture,A three-dimensional work of art
+MEDIUM,ART,portrait,A painting drawing or photograph of a person
+HARD,ART,impressionism,A 19th-century art movement
+HARD,ART,expressionism,A modernist movement in art
