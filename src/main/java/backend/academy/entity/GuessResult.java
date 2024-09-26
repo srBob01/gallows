@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class GuessResult {
-    private final int MAX_COUNT_ATTEMPTS = 15;
+    protected static final int MAX_COUNT_ATTEMPTS = 15;
     private final Word word;
     private Character character;
     private Integer remainingAttempts;
