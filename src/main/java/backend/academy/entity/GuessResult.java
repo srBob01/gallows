@@ -2,8 +2,7 @@ package backend.academy.entity;
 
 import lombok.Getter;
 
-@Getter
-public class GuessResult {
+@Getter public class GuessResult {
     protected static final int MAX_COUNT_ATTEMPTS = 15;
     private final Word word;
     private Character character;
@@ -15,27 +14,32 @@ public class GuessResult {
     }
 
     public ResultEnter resultEnter(String string) {
+        ResultEnter result;
+
         if (string.length() == 1) {
-            if (Character.isLetter(string.charAt(0))) {
-                this.character = Character.toLowerCase(string.charAt(0));
+            char inputChar = string.charAt(0);
+            if (Character.isLetter(inputChar)) {
+                this.character = Character.toLowerCase(inputChar);
                 if (word.isGuessChar(character)) {
-                    return ResultEnter.CharTrue;
+                    result = ResultEnter.CharTrue;
                 } else {
                     remainingAttempts--;
-                    return ResultEnter.CharFalse;
+                    result = ResultEnter.CharFalse;
                 }
-            } else if (string.equals("!")) {
+            } else if (inputChar == '!') {
                 this.character = null;
                 remainingAttempts--;
-                return ResultEnter.Hint;
+                result = ResultEnter.Hint;
             } else {
                 this.character = null;
                 remainingAttempts--;
-                return ResultEnter.Error;
+                result = ResultEnter.Error;
             }
         } else {
             this.character = null;
-            return ResultEnter.Missing;
+            result = ResultEnter.Missing;
         }
+
+        return result;
     }
 }

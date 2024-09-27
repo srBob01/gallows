@@ -1,14 +1,12 @@
 package backend.academy.entity;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 
-@Getter
-public class Word {
+@Getter public class Word {
     private final Difficulty difficulty;
     private final Category category;
     private final String word;

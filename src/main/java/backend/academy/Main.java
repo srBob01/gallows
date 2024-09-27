@@ -1,7 +1,5 @@
 package backend.academy;
 
-import backend.academy.gamestate.DefaultGameStateManager;
-import backend.academy.gamestate.GameStateManagerInterface;
 import backend.academy.input.ConsoleInputReader;
 import backend.academy.input.InputInterface;
 import backend.academy.logic.DefaultGameLogic;
@@ -17,25 +15,21 @@ import backend.academy.wordloader.CSVFileWordLoader;
 import backend.academy.wordloader.WordLoaderInterface;
 import backend.academy.wordrepository.DefaultWordRepository;
 import backend.academy.wordrepository.WordRepositoryInterface;
-import java.io.IOException;
 import lombok.experimental.UtilityClass;
 
-@UtilityClass
-public class Main {
-    public static void main(String[] args) throws IOException {
+@UtilityClass public class Main {
+    public static void main(String[] args) {
         OutputInterface consoleOutput = new ConsoleOutputWriter();
         InputInterface consoleInput = new ConsoleInputReader();
         RandomGeneratorInterface randomGeneratorInterface = new DefaultRandomGenerator();
         GallowsRenderInterface gallowsRenderInterface = new DefaultGallowsRender(consoleOutput);
-        GameIORenderInterface gameIoRenderInterface = new DefaultGameIORender(consoleInput, consoleOutput,
-            randomGeneratorInterface);
+        GameIORenderInterface gameIoRenderInterface =
+            new DefaultGameIORender(consoleInput, consoleOutput, randomGeneratorInterface);
         WordLoaderInterface wordLoaderInterface = new CSVFileWordLoader("words.csv");
-        WordRepositoryInterface wordRepositoryInterface = new DefaultWordRepository(wordLoaderInterface,
-            randomGeneratorInterface);
-        GameStateManagerInterface gameStateManager = new DefaultGameStateManager();
+        WordRepositoryInterface wordRepositoryInterface =
+            new DefaultWordRepository(wordLoaderInterface, randomGeneratorInterface);
         DefaultGameLogic logicRender =
-            new DefaultGameLogic(gameIoRenderInterface, gallowsRenderInterface, wordRepositoryInterface,
-                gameStateManager);
+            new DefaultGameLogic(gameIoRenderInterface, gallowsRenderInterface, wordRepositoryInterface);
         logicRender.game();
     }
 }

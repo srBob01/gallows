@@ -2,30 +2,32 @@ package backend.academy.output;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FileOutputWriter implements OutputInterface {
-    private static final Logger logger = LoggerFactory.getLogger(FileOutputWriter.class);
-    private final FileWriter writer;
+@NoArgsConstructor public class FileOutputWriter implements OutputInterface {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileOutputWriter.class);
+    private FileWriter writer;
 
-    public FileOutputWriter(String fileName) throws IOException {
+    public void initializeWriter(String fileName) {
         try {
-            this.writer = new FileWriter(fileName, true);
+            this.writer = new FileWriter(fileName, StandardCharsets.UTF_8, true);
         } catch (IOException e) {
-            logger.error("Error initializing FileWriter for file: {}", fileName, e);
+            LOGGER.error("Error initializing FileWriter for file {}", fileName, e);
             throw new RuntimeException("Error initializing FileWriter for file: " + fileName, e);
         }
     }
 
-    @Override
-    public void print(String output) {
+    @Override public void print(String output) {
         try {
             writer.write(output + System.lineSeparator());
             writer.flush();
         } catch (IOException e) {
-            logger.error("Error writing to file", e);
-            throw new RuntimeException("Error writing to file", e);
+            final String error = "Error writing to file";
+            LOGGER.error(error, e);
+            throw new RuntimeException(error, e);
         }
     }
 
@@ -33,8 +35,9 @@ public class FileOutputWriter implements OutputInterface {
         try {
             writer.close();
         } catch (IOException e) {
-            logger.error("Error closing the file", e);
-            throw new RuntimeException("Error closing the file", e);
+            final String error = "Error closing the file";
+            LOGGER.error(error, e);
+            throw new RuntimeException(error, e);
         }
     }
 }

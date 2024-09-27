@@ -3,15 +3,15 @@ package backend.academy.logic;
 import backend.academy.entity.Category;
 import backend.academy.entity.Difficulty;
 import backend.academy.entity.Word;
-import backend.academy.gamestate.DefaultGameStateManager;
-import backend.academy.gamestate.GameStateManagerInterface;
 import backend.academy.render.GallowsRenderInterface;
 import backend.academy.render.GameIORenderInterface;
 import backend.academy.wordrepository.WordRepositoryInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class DefaultGameLogicTest {
 
@@ -23,13 +23,11 @@ class DefaultGameLogicTest {
         gameIoRenderInterface = mock(GameIORenderInterface.class);
         GallowsRenderInterface gallowsRenderInterface = mock(GallowsRenderInterface.class);
         WordRepositoryInterface wordRepositoryInterface = mock(WordRepositoryInterface.class);
-        GameStateManagerInterface defaultGameStateManager = new DefaultGameStateManager();
 
         Word word = new Word(Difficulty.MEDIUM, Category.SCIENCE, "gravity",
             "A force that pulls objects towards Earth");
 
-        logicRender = new DefaultGameLogic(gameIoRenderInterface, gallowsRenderInterface, wordRepositoryInterface,
-            defaultGameStateManager);
+        logicRender = new DefaultGameLogic(gameIoRenderInterface, gallowsRenderInterface, wordRepositoryInterface);
 
         when(wordRepositoryInterface.getRandomWord(any(Category.class), any(Difficulty.class))).thenReturn(word);
     }
