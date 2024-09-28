@@ -23,26 +23,21 @@ public class DefaultWordRepository implements WordRepositoryInterface {
 
     @Override
     public Word getRandomWord(Category category, Difficulty difficulty) {
+        int maxAttempts = MAX_COUNT_ATTEMPTS - difficulty.stepsToSkip();
         List<Word> filteredWords = words.stream()
             .filter(word -> word.category() == category && word.difficulty() == difficulty)
+            .filter(word -> !word.word().isEmpty())
+            .filter(word -> word.charPositions().size() <= maxAttempts)
             .toList();
 
         if (filteredWords.isEmpty()) {
-            LOGGER.error("No words found for category: {}, difficulty: {}", category, difficulty);
-            throw new IllegalArgumentException("No words found for the specified category and difficulty");
+            LOGGER.error("No suitable  words found for category: {}, difficulty: {}", category, difficulty);
+            throw new IllegalArgumentException("No suitable words found for the specified category and difficulty");
         }
 
         Word word = filteredWords.get(random.nextInt(filteredWords.size()));
-
-        int uniqueCharCount = word.charPositions().size();
-        int remainingAttempts = MAX_COUNT_ATTEMPTS - word.difficulty().stepsToSkip();
-        if (uniqueCharCount > remainingAttempts) {
-            LOGGER.error("Selected word '{}' has too many unique characters ({}) for the available attempts ({})",
-                word.word(), uniqueCharCount, remainingAttempts);
-            throw new IllegalStateException("The word has too many unique characters for the available attempts");
-        }
-
         LOGGER.info("Selected random word: {} (Category: {}, Difficulty: {})", word.word(), category, difficulty);
+
         return word;
     }
 }

@@ -5,11 +5,11 @@ import backend.academy.entity.Difficulty;
 import backend.academy.entity.Word;
 import backend.academy.random.RandomGeneratorInterface;
 import backend.academy.wordloader.ArrayWordLoader;
-import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -21,7 +21,7 @@ class DefaultWordRepositoryTest {
     private DefaultWordRepository wordRepository;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() {
         randomGeneratorInterface = mock(RandomGeneratorInterface.class);
 
         List<Word> testWords = List.of(
@@ -70,13 +70,13 @@ class DefaultWordRepositoryTest {
     void testGetRandomWordWithTooManyUniqueCharactersThrowsException() {
         when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
 
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             wordRepository.getRandomWord(Category.SCIENCE, Difficulty.HARD);
         });
     }
 
     @Test
-    void testEmptyWordListThrowsException() throws IOException {
+    void testEmptyWordListThrowsException() {
         // Сценарий: пустой список слов
         DefaultWordRepository emptyRepo =
             new DefaultWordRepository(new ArrayWordLoader(List.of()), randomGeneratorInterface);
@@ -87,7 +87,7 @@ class DefaultWordRepositoryTest {
     }
 
     @Test
-    void testGetWordWithExactAttemptLimit() throws IOException {
+    void testGetWordWithExactAttemptLimit() {
         // Добавляем слово с точным количеством уникальных символов равным количеству доступных попыток
         List<Word> testWords = List.of(
             new Word(Difficulty.MEDIUM, Category.TECHNOLOGY, "abcdefgqwert", "Unique letters test")
@@ -104,4 +104,40 @@ class DefaultWordRepositoryTest {
         assertEquals("abcdefgqwert", word.word());
         assertEquals("Unique letters test", word.hint());
     }
+
+    @Test
+    void testGetRandomWordSkipsEmptyWords() {
+        List<Word> testWords = List.of(
+            new Word(Difficulty.EASY, Category.SPORTS, "", "Empty word should be skipped"),
+            new Word(Difficulty.EASY, Category.SPORTS, "running", "A common sport activity")
+        );
+
+        ArrayWordLoader wordLoader = new ArrayWordLoader(testWords);
+        wordRepository = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
+
+        when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
+
+        Word word = wordRepository.getRandomWord(Category.SPORTS, Difficulty.EASY);
+
+        assertNotNull(word);
+        assertNotEquals("", word.word());
+        assertEquals("running", word.word());
+        assertEquals("A common sport activity", word.hint());
+    }
+
+    @Test
+    void testGetRandomWordThrowsExceptionForOnlyEmptyWords() {
+        List<Word> testWords = List.of(
+            new Word(Difficulty.EASY, Category.TECHNOLOGY, "", "Empty word"),
+            new Word(Difficulty.MEDIUM, Category.TECHNOLOGY, "", "Another empty word"),
+            new Word(Difficulty.HARD, Category.TECHNOLOGY, "", "Yet another empty word")
+        );
+
+        ArrayWordLoader wordLoader = new ArrayWordLoader(testWords);
+        wordRepository = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> wordRepository.getRandomWord(Category.TECHNOLOGY, Difficulty.EASY));
+    }
+
 }
