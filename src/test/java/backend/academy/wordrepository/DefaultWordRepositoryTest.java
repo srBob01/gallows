@@ -22,6 +22,7 @@ class DefaultWordRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        // Arrange
         randomGeneratorInterface = mock(RandomGeneratorInterface.class);
 
         List<Word> testWords = List.of(
@@ -47,10 +48,15 @@ class DefaultWordRepositoryTest {
 
     @Test
     void testGetRandomWordWithValidCategoryAndDifficulty() {
+        // Arrange
         when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
+        Category category = Category.TECHNOLOGY;
+        Difficulty difficulty = Difficulty.MEDIUM;
 
-        Word word = wordRepository.getRandomWord(Category.TECHNOLOGY, Difficulty.MEDIUM);
+        // Act
+        Word word = wordRepository.getRandomWord(category, difficulty);
 
+        // Assert
         assertNotNull(word);
         assertEquals("algorithm", word.word());
         assertEquals("A set of rules to solve problems", word.hint());
@@ -60,46 +66,59 @@ class DefaultWordRepositoryTest {
 
     @Test
     void testGetRandomWordThrowsExceptionWhenNoWordsFound() {
-        // Сценарий: нет слов для конкретной категории и сложности
+        // Arrange
+        Category category = Category.ART;
+        Difficulty difficulty = Difficulty.EASY;
+
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            wordRepository.getRandomWord(Category.ART, Difficulty.EASY);
+            wordRepository.getRandomWord(category, difficulty);
         });
     }
 
     @Test
     void testGetRandomWordWithTooManyUniqueCharactersThrowsException() {
+        // Arrange
         when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
+        Category category = Category.SCIENCE;
+        Difficulty difficulty = Difficulty.HARD;
 
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            wordRepository.getRandomWord(Category.SCIENCE, Difficulty.HARD);
+            wordRepository.getRandomWord(category, difficulty);
         });
     }
 
     @Test
     void testEmptyWordListThrowsException() {
-        // Сценарий: пустой список слов
-        DefaultWordRepository emptyRepo =
-            new DefaultWordRepository(new ArrayWordLoader(List.of()), randomGeneratorInterface);
+        // Arrange
+        ArrayWordLoader emptyWordLoader = new ArrayWordLoader(List.of());
+        DefaultWordRepository emptyRepo = new DefaultWordRepository(emptyWordLoader, randomGeneratorInterface);
+        Category category = Category.SCIENCE;
+        Difficulty difficulty = Difficulty.EASY;
 
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            emptyRepo.getRandomWord(Category.SCIENCE, Difficulty.EASY);
+            emptyRepo.getRandomWord(category, difficulty);
         });
     }
 
     @Test
     void testGetWordWithExactAttemptLimit() {
-        // Добавляем слово с точным количеством уникальных символов равным количеству доступных попыток
-        List<Word> testWords = List.of(
+        // Arrange
+        List<Word> exactLimitWords = List.of(
             new Word(Difficulty.MEDIUM, Category.TECHNOLOGY, "abcdefgqwert", "Unique letters test")
         );
-
-        ArrayWordLoader wordLoader = new ArrayWordLoader(testWords);
-        wordRepository = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
-
+        ArrayWordLoader wordLoader = new ArrayWordLoader(exactLimitWords);
+        DefaultWordRepository exactLimitRepo = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
         when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
+        Category category = Category.TECHNOLOGY;
+        Difficulty difficulty = Difficulty.MEDIUM;
 
-        Word word = wordRepository.getRandomWord(Category.TECHNOLOGY, Difficulty.MEDIUM);
+        // Act
+        Word word = exactLimitRepo.getRandomWord(category, difficulty);
 
+        // Assert
         assertNotNull(word);
         assertEquals("abcdefgqwert", word.word());
         assertEquals("Unique letters test", word.hint());
@@ -107,18 +126,21 @@ class DefaultWordRepositoryTest {
 
     @Test
     void testGetRandomWordSkipsEmptyWords() {
-        List<Word> testWords = List.of(
+        // Arrange
+        List<Word> wordsWithEmpty = List.of(
             new Word(Difficulty.EASY, Category.SPORTS, "", "Empty word should be skipped"),
             new Word(Difficulty.EASY, Category.SPORTS, "running", "A common sport activity")
         );
-
-        ArrayWordLoader wordLoader = new ArrayWordLoader(testWords);
-        wordRepository = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
-
+        ArrayWordLoader wordLoader = new ArrayWordLoader(wordsWithEmpty);
+        DefaultWordRepository repoWithEmpty = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
         when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
+        Category category = Category.SPORTS;
+        Difficulty difficulty = Difficulty.EASY;
 
-        Word word = wordRepository.getRandomWord(Category.SPORTS, Difficulty.EASY);
+        // Act
+        Word word = repoWithEmpty.getRandomWord(category, difficulty);
 
+        // Assert
         assertNotNull(word);
         assertNotEquals("", word.word());
         assertEquals("running", word.word());
@@ -127,17 +149,20 @@ class DefaultWordRepositoryTest {
 
     @Test
     void testGetRandomWordThrowsExceptionForOnlyEmptyWords() {
-        List<Word> testWords = List.of(
+        // Arrange
+        List<Word> onlyEmptyWords = List.of(
             new Word(Difficulty.EASY, Category.TECHNOLOGY, "", "Empty word"),
             new Word(Difficulty.MEDIUM, Category.TECHNOLOGY, "", "Another empty word"),
             new Word(Difficulty.HARD, Category.TECHNOLOGY, "", "Yet another empty word")
         );
+        ArrayWordLoader wordLoader = new ArrayWordLoader(onlyEmptyWords);
+        DefaultWordRepository repoWithOnlyEmpty = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
+        Category category = Category.TECHNOLOGY;
+        Difficulty difficulty = Difficulty.EASY;
 
-        ArrayWordLoader wordLoader = new ArrayWordLoader(testWords);
-        wordRepository = new DefaultWordRepository(wordLoader, randomGeneratorInterface);
-
-        assertThrows(IllegalArgumentException.class,
-            () -> wordRepository.getRandomWord(Category.TECHNOLOGY, Difficulty.EASY));
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            repoWithOnlyEmpty.getRandomWord(category, difficulty);
+        });
     }
-
 }

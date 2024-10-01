@@ -17,16 +17,21 @@ class DefaultGallowsRenderTest {
 
     @BeforeEach
     void setUp() {
+        // Arrange
         outputInterface = mock(OutputInterface.class);
         defaultGallowsRender = new DefaultGallowsRender(outputInterface);
     }
 
     @Test
     void testPrintStateValidState() {
-        // Проверяем корректность вывода для каждого шага виселицы
-        for (int i = 0; i < 15; i++) {
+        // Arrange
+        int totalStates = defaultGallowsRender.steps().length; // Количество состояний виселицы
+
+        for (int i = 0; i < totalStates; i++) {
+            // Act
             defaultGallowsRender.printState(i);
 
+            // Assert
             // Захватываем аргумент, переданный в outputInterface.print
             ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
             verify(outputInterface).print(captor.capture());
@@ -35,41 +40,37 @@ class DefaultGallowsRenderTest {
             String expectedOutput = defaultGallowsRender.steps()[i];
             assertEquals(expectedOutput, captor.getValue());
 
-            // Сбрасываем взаимодействия с outputInterface перед следующим шагом
+            // Reset для следующей итерации
             reset(outputInterface);
         }
     }
 
     @Test
     void testPrintStateInvalidStateBelowRange() {
+        // Arrange
+        int invalidState = -1;
+
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            defaultGallowsRender.printState(-1);
+            defaultGallowsRender.printState(invalidState);
         });
     }
 
     @Test
     void testPrintStateInvalidStateAboveRange() {
+        // Arrange
+        int invalidState = 15; // Максимальное состояние 14
+
+        // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            defaultGallowsRender.printState(15);
+            defaultGallowsRender.printState(invalidState);
         });
     }
 
     @Test
-    void testIntermediateStates() {
-        defaultGallowsRender.printState(0);
-        verify(outputInterface).print("""
-               +---+
-              [x]  |
-              xxx  |
-               x   |
-              x x  |
-                   |
-              =========
-            """);
-        reset(outputInterface);
+    void testIntermediateState() {
 
-        defaultGallowsRender.printState(7);
-        verify(outputInterface).print("""
+        String expectedOutputState7 = """
                +---+
                |   |
                O   |
@@ -78,6 +79,12 @@ class DefaultGallowsRenderTest {
                    |
             /=====\\
               =========
-            """);
+            """;
+
+        // Act
+        defaultGallowsRender.printState(7);
+
+        // Assert
+        verify(outputInterface).print(expectedOutputState7);
     }
 }

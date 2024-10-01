@@ -1,74 +1,93 @@
 package backend.academy.gamestate;
 
 import backend.academy.entity.GameState;
-import org.junit.jupiter.api.Test;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultGameStateManagerTest {
+
     @Test
     void testGameLostWhenNoAttemptsLeft() {
+        // Arrange
         DefaultGameStateManager defaultGameStateManager = new DefaultGameStateManager();
         List<Character> guessedChars = List.of('_', '_', '_'); // слово не угадано
+        int remainingAttempts = 0; // 0 оставшихся попыток
 
-        // 0 оставшихся попыток
-        GameState result = defaultGameStateManager.isInProgress(guessedChars, 0);
+        // Act
+        GameState result = defaultGameStateManager.isInProgress(guessedChars, remainingAttempts);
 
+        // Assert
         assertEquals(GameState.Lose, result);
     }
 
     @Test
     void testGameLostWhenNegativeAttempts() {
+        // Arrange
         DefaultGameStateManager defaultGameStateManager = new DefaultGameStateManager();
         List<Character> guessedChars = List.of('_', '_', '_'); // слово не угадано
+        int remainingAttempts = -1; // отрицательное количество оставшихся попыток
 
-        // отрицательное количество оставшихся попыток
-        GameState result = defaultGameStateManager.isInProgress(guessedChars, -1);
+        // Act
+        GameState result = defaultGameStateManager.isInProgress(guessedChars, remainingAttempts);
 
+        // Assert
         assertEquals(GameState.Lose, result);
     }
 
     @Test
     void testGameWonWhenAllCharactersGuessed() {
+        // Arrange
         DefaultGameStateManager defaultGameStateManager = new DefaultGameStateManager();
         List<Character> guessedChars = List.of('g', 'r', 'a', 'v', 'i', 't', 'y'); // слово угадано
+        int remainingAttempts = 3; // Оставшиеся попытки могут быть любыми
 
-        // Оставшиеся попытки могут быть любыми
-        GameState result = defaultGameStateManager.isInProgress(guessedChars, 3);
+        // Act
+        GameState result = defaultGameStateManager.isInProgress(guessedChars, remainingAttempts);
 
+        // Assert
         assertEquals(GameState.Win, result);
     }
 
     @Test
     void testGameInProgressWhenCharactersRemaining() {
+        // Arrange
         DefaultGameStateManager defaultGameStateManager = new DefaultGameStateManager();
         List<Character> guessedChars = List.of('g', '_', '_', 'v', '_', '_', '_'); // часть слова угадана
+        int remainingAttempts = 5; // Есть оставшиеся попытки
 
-        // Есть оставшиеся попытки
-        GameState result = defaultGameStateManager.isInProgress(guessedChars, 5);
+        // Act
+        GameState result = defaultGameStateManager.isInProgress(guessedChars, remainingAttempts);
 
+        // Assert
         assertEquals(GameState.InProgress, result);
     }
 
     @Test
     void testGameInProgressWithSingleUnderscoreAndAttemptsRemaining() {
+        // Arrange
         DefaultGameStateManager defaultGameStateManager = new DefaultGameStateManager();
         List<Character> guessedChars = List.of('g', 'r', 'a', 'v', 'i', 't', '_'); // осталась одна буква
+        int remainingAttempts = 2; // Есть оставшиеся попытки
 
-        // Есть оставшиеся попытки
-        GameState result = defaultGameStateManager.isInProgress(guessedChars, 2);
+        // Act
+        GameState result = defaultGameStateManager.isInProgress(guessedChars, remainingAttempts);
 
+        // Assert
         assertEquals(GameState.InProgress, result);
     }
 
     @Test
     void testGameLostWithUnderscoresAndNoAttemptsLeft() {
+        // Arrange
         DefaultGameStateManager defaultGameStateManager = new DefaultGameStateManager();
         List<Character> guessedChars = List.of('g', '_', '_', 'v', '_', '_', '_'); // часть слова угадана
+        int remainingAttempts = 0; // 0 оставшихся попыток
 
-        // 0 оставшихся попыток
-        GameState result = defaultGameStateManager.isInProgress(guessedChars, 0);
+        // Act
+        GameState result = defaultGameStateManager.isInProgress(guessedChars, remainingAttempts);
 
+        // Assert
         assertEquals(GameState.Lose, result);
     }
 }

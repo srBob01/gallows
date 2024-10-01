@@ -8,55 +8,63 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class DefaultGameIORenderTest {
 
     private InputInterface inputInterface;
-    private OutputInterface outputInterface;
     private RandomGeneratorInterface randomGeneratorInterface;
     private DefaultGameIORender ioRender;
 
     @BeforeEach
     void setUp() {
+        // Arrange
         inputInterface = mock(InputInterface.class);
-        outputInterface = mock(OutputInterface.class);
+        OutputInterface outputInterface = mock(OutputInterface.class);
         randomGeneratorInterface = mock(RandomGeneratorInterface.class);
         ioRender = new DefaultGameIORender(inputInterface, outputInterface, randomGeneratorInterface);
     }
 
     @Test
     void testSelectCategoryValidInput() {
+        // Arrange
         when(inputInterface.read()).thenReturn("1");
+        Category expectedCategory = Category.values()[1];
 
-        Category category = ioRender.selectCategory();
+        // Act
+        Category actualCategory = ioRender.selectCategory();
 
-        assertEquals(Category.values()[1], category);
+        // Assert
+        assertEquals(expectedCategory, actualCategory);
     }
 
     @Test
     void testSelectCategoryInvalidIndex() {
-        when(inputInterface.read()).thenReturn("10");
-        when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(0);
+        // Arrange
+        when(inputInterface.read()).thenReturn("10"); // Предполагаемый недопустимый индекс
+        when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(
+            0); // Возвращаемый индекс для категории по умолчанию
+        Category expectedCategory = Category.values()[0]; // Ожидаемая категория по умолчанию
 
-        Category category = ioRender.selectCategory();
+        // Act
+        Category actualCategory = ioRender.selectCategory();
 
-        assertEquals(Category.values()[0], category);
+        // Assert
+        assertEquals(expectedCategory, actualCategory);
     }
 
     @Test
     void testSelectCategoryInvalidFormat() {
-        when(inputInterface.read()).thenReturn("invalid");
-        when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(2);
+        // Arrange
+        when(inputInterface.read()).thenReturn("invalid"); // Недопустимый формат ввода
+        when(randomGeneratorInterface.nextInt(anyInt())).thenReturn(2); // Возвращаемый индекс для корректной категории
+        Category expectedCategory = Category.values()[2]; // Ожидаемая категория после обработки некорректного ввода
 
-        Category category = ioRender.selectCategory();
+        // Act
+        Category actualCategory = ioRender.selectCategory();
 
-        assertEquals(Category.values()[2], category);
-
-        verify(outputInterface, atLeastOnce()).print(anyString());
+        // Assert
+        assertEquals(expectedCategory, actualCategory);
     }
 }

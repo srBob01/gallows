@@ -20,69 +20,86 @@ class DefaultGameLogicTest {
 
     @BeforeEach
     void setUp() {
+        // Arrange
         gameIoRenderInterface = mock(GameIORenderInterface.class);
         GallowsRenderInterface gallowsRenderInterface = mock(GallowsRenderInterface.class);
         WordRepositoryInterface wordRepositoryInterface = mock(WordRepositoryInterface.class);
 
+        // Создаем тестовое слово
         Word word = new Word(Difficulty.MEDIUM, Category.SCIENCE, "gravity",
             "A force that pulls objects towards Earth");
 
+        // Инициализируем объект логики игры
         logicRender = new DefaultGameLogic(gameIoRenderInterface, gallowsRenderInterface, wordRepositoryInterface);
 
+        // Настраиваем поведение моков
         when(wordRepositoryInterface.getRandomWord(any(Category.class), any(Difficulty.class))).thenReturn(word);
     }
 
     @Test
-    void testGameEndsWithWin() throws Exception {
-        // Мокируем ввод правильных символов, чтобы завершить игру победой
+    void testGameEndsWithWin() {
+        // Arrange
         when(gameIoRenderInterface.selectDifficulty()).thenReturn(Difficulty.MEDIUM);
         when(gameIoRenderInterface.selectCategory()).thenReturn(Category.SCIENCE);
-        when(gameIoRenderInterface.selectNextCharacter()).thenReturn("g", "r", "a", "v", "i", "t", "y");
 
+        when(gameIoRenderInterface.selectNextCharacter()).thenReturn("g", "r", "a", "v", "i", "t",
+            "y");// Мокируем последовательные правильные вводы символов для завершения игры победой
+
+        // Act
         logicRender.game();
 
-        // Проверяем, что игра закончилась победой
-        verify(gameIoRenderInterface).print("You are win!. It was word: gravity");
+        // Assert
+        verify(gameIoRenderInterface).print(
+            "You are win!. It was word: gravity");// Проверяем, что сообщение о победе было выведено
     }
 
     @Test
-    void testGameEndsWithLose() throws Exception {
-        // Мокируем неверные попытки, чтобы завершить игру поражением
+    void testGameEndsWithLose() {
+        // Arrange
         when(gameIoRenderInterface.selectDifficulty()).thenReturn(Difficulty.MEDIUM);
         when(gameIoRenderInterface.selectCategory()).thenReturn(Category.SCIENCE);
-        when(gameIoRenderInterface.selectNextCharacter()).thenReturn("x", "z", "q", "w", "e", "f", "b", "z",
-            "q", "w", "e", "f", "b"); // Все попытки неверные
+        when(gameIoRenderInterface.selectNextCharacter()).thenReturn(
+            "x", "z", "q", "w", "e", "f", "b", "z",
+            "q", "w", "e", "f", "b"
+        ); // Все попытки неверные
 
+        // Act
         logicRender.game();
 
-        // Проверяем, что игра закончилась поражением
-        verify(gameIoRenderInterface).print("You are lose. It was word: gravity");
+        // Assert
+        verify(gameIoRenderInterface).print(
+            "You are lose. It was word: gravity");// Проверяем, что сообщение о поражении было выведено
     }
 
     @Test
-    void testHintUsage() throws Exception {
-        // Мокируем ввод символов и подсказки
+    void testHintUsage() {
+        // Arrange
         when(gameIoRenderInterface.selectDifficulty()).thenReturn(Difficulty.MEDIUM);
         when(gameIoRenderInterface.selectCategory()).thenReturn(Category.SCIENCE);
-        when(gameIoRenderInterface.selectNextCharacter()).thenReturn("g", "!", "r", "a", "v", "i", "t", "y");
+        when(gameIoRenderInterface.selectNextCharacter()).thenReturn("g", "!", "r", "a", "v", "i", "t",
+            "y");// Мокируем ввод символов, включая запрос подсказки ("!")
 
+        // Act
         logicRender.game();
 
-        // Проверяем, что подсказка была выведена
-        verify(gameIoRenderInterface).print("Hint: A force that pulls objects towards Earth");
+        // Assert
+        verify(gameIoRenderInterface).print(
+            "Hint: A force that pulls objects towards Earth");// Проверяем, что подсказка была выведена
     }
 
     @Test
-    void testValidAndInvalidCharacterInput() throws Exception {
-        // Мокируем правильные и неправильные вводы
+    void testValidAndInvalidCharacterInput() {
+        // Arrange
         when(gameIoRenderInterface.selectDifficulty()).thenReturn(Difficulty.MEDIUM);
         when(gameIoRenderInterface.selectCategory()).thenReturn(Category.SCIENCE);
         when(gameIoRenderInterface.selectNextCharacter()).thenReturn("g", "x", "r", "z", "a", "v", "i", "t",
-            "y");
+            "y");// Мокируем смешанные правильные и неправильные вводы символов
 
+        // Act
         logicRender.game();
 
-        // Проверяем, что правильные буквы были угаданы
-        verify(gameIoRenderInterface).print("You are win!. It was word: gravity");
+        // Assert
+        verify(gameIoRenderInterface).print(
+            "You are win!. It was word: gravity");// Проверяем, что игра закончилась победой
     }
 }
