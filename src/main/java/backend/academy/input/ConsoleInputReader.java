@@ -14,12 +14,14 @@ public class ConsoleInputReader implements InputInterface {
         LOGGER.info("Console input initialized.");
     }
 
-    @Override public String read() {
+    @Override
+    public String read() {
         LOGGER.debug("Reading input from console.");
         return scanner.nextLine();
     }
 
-    @Override public void close() {
+    @Override
+    public void close() {
         LOGGER.info("Console input closed.");
     }
 }

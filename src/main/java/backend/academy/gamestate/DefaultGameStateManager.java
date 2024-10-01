@@ -8,7 +8,8 @@ import org.slf4j.LoggerFactory;
 public class DefaultGameStateManager implements GameStateManagerInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGameStateManager.class);
 
-    @Override public GameState isInProgress(List<Character> guessedChars, int remainingAttempts) {
+    @Override
+    public GameState isInProgress(List<Character> guessedChars, int remainingAttempts) {
         if (remainingAttempts <= 0) {
             LOGGER.info("Game lost. No remaining attempts.");
             return GameState.Lose;

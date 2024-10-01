@@ -6,10 +6,13 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AllArgsConstructor public class DefaultGallowsRender implements GallowsRenderInterface {
+@AllArgsConstructor
+public class DefaultGallowsRender implements GallowsRenderInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGallowsRender.class);
     private final OutputInterface outputInterface;
-    @Getter private final String[] steps = {"""
+
+    @Getter
+    private final String[] steps = {"""
                +---+
               [x]  |
               xxx  |
@@ -142,6 +145,7 @@ import org.slf4j.LoggerFactory;
               =========
             """};
 
+    @Override
     public void printState(int state) {
         if (state >= 0 && state < steps.length) {
             outputInterface.print(steps[state]);

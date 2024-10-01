@@ -2,7 +2,8 @@ package backend.academy.entity;
 
 import lombok.Getter;
 
-@Getter public class GuessResult {
+@Getter
+public class GuessResult {
     protected static final int MAX_COUNT_ATTEMPTS = 15;
     private final Word word;
     private Character character;

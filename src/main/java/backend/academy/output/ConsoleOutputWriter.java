@@ -12,7 +12,8 @@ public class ConsoleOutputWriter implements OutputInterface {
         this.out = System.out;
     }
 
-    @Override public void print(String output) {
+    @Override
+    public void print(String output) {
         try {
             out.println(output);
             LOGGER.info("Output to console: {}", output);

@@ -14,7 +14,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AllArgsConstructor public class CSVFileWordLoader implements WordLoaderInterface {
+@AllArgsConstructor
+public class CSVFileWordLoader implements WordLoaderInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(CSVFileWordLoader.class);
     private static final int REQUIRED_FIELDS_COUNT = 4;
     private static final int DIFFICULTY_INDEX = 0;
@@ -23,7 +24,8 @@ import org.slf4j.LoggerFactory;
     private static final int HINT_INDEX = 3;
     private final String fileName;
 
-    @Override public List<Word> loadWords() {
+    @Override
+    public List<Word> loadWords() {
         List<Word> words;
         try (BufferedReader br = new BufferedReader(
             new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(fileName)),

@@ -11,7 +11,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AllArgsConstructor public class DefaultGameIORender implements GameIORenderInterface {
+@AllArgsConstructor
+public class DefaultGameIORender implements GameIORenderInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGameIORender.class);
     private final InputInterface inputInterface;
     private final OutputInterface outputInterface;
@@ -43,27 +44,32 @@ import org.slf4j.LoggerFactory;
         return values[choice];
     }
 
-    @Override public Category selectCategory() {
+    @Override
+    public Category selectCategory() {
         return selectOption("category", Category.values(), randomGeneratorInterface);
     }
 
-    @Override public Difficulty selectDifficulty() {
+    @Override
+    public Difficulty selectDifficulty() {
         return selectOption("difficulty", Difficulty.values(), randomGeneratorInterface);
     }
 
-    @Override public String selectNextCharacter() {
+    @Override
+    public String selectNextCharacter() {
         outputInterface.print("Input next char -> ");
         String input = inputInterface.read();
         LOGGER.debug("Selected next character: {}", input);
         return input;
     }
 
-    @Override public void print(String string) {
+    @Override
+    public void print(String string) {
         outputInterface.print(string);
         LOGGER.info("Printed message: {}", string);
     }
 
-    @Override public void printInfo(List<Character> word, int remainingAttempts) {
+    @Override
+    public void printInfo(List<Character> word, int remainingAttempts) {
         StringBuilder sb = new StringBuilder();
         for (Character c : word) {
             sb.append(c);

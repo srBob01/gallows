@@ -13,7 +13,8 @@ public class DefaultRandomGenerator implements RandomGeneratorInterface {
         LOGGER.info("RandomGeneratorInterface initialized");
     }
 
-    @Override public int nextInt(int bound) {
+    @Override
+    public int nextInt(int bound) {
         int result = random.nextInt(bound);
         LOGGER.debug("Generated random int: {} (bound: {})", result, bound);
         return result;

@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@NoArgsConstructor public class FileOutputWriter implements OutputInterface {
+@NoArgsConstructor
+public class FileOutputWriter implements OutputInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileOutputWriter.class);
     private FileWriter writer;
 
@@ -20,7 +21,8 @@ import org.slf4j.LoggerFactory;
         }
     }
 
-    @Override public void print(String output) {
+    @Override
+    public void print(String output) {
         try {
             writer.write(output + System.lineSeparator());
             writer.flush();

@@ -18,7 +18,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AllArgsConstructor public class DefaultGameLogic implements GameLogicInterface {
+@AllArgsConstructor
+public class DefaultGameLogic implements GameLogicInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGameLogic.class);
     private final GameIORenderInterface gameIoRenderInterface;
     private final GallowsRenderInterface gallowsRenderInterface;

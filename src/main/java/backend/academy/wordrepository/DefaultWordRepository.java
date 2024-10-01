@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DefaultWordRepository implements WordRepositoryInterface {
-    private final static int MAX_COUNT_ATTEMPTS = 15;
+    private static final int MAX_COUNT_ATTEMPTS = 15;
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultWordRepository.class);
     private final List<Word> words;
     private final RandomGeneratorInterface random;

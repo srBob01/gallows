@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@NoArgsConstructor public class FileInputReader implements InputInterface {
+@NoArgsConstructor
+public class FileInputReader implements InputInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileInputReader.class);
     private BufferedReader reader;
 
@@ -22,7 +23,8 @@ import org.slf4j.LoggerFactory;
         }
     }
 
-    @Override public String read() {
+    @Override
+    public String read() {
         try {
             LOGGER.debug("Reading line from file.");
             return reader.readLine();
@@ -33,7 +35,8 @@ import org.slf4j.LoggerFactory;
         }
     }
 
-    @Override public void close() {
+    @Override
+    public void close() {
         try {
             reader.close();
             LOGGER.info("FileInputReader closed successfully.");
